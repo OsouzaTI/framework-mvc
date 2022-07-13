@@ -24,7 +24,7 @@ class Html {
     public function js($files = []) {
         $jsHtml = [];
         foreach($files as $file) {
-            $filePath = $this->assets->fetch("js/$file");
+            $filePath = $this->assets->fetch("js/$file.js");
             $jsIncludeHtml = $this->generateJsIncludeFile($filePath);
             array_push($jsHtml, $jsIncludeHtml);
         }
@@ -34,7 +34,7 @@ class Html {
     public function css($files = []) {
         $cssHtml = [];
         foreach($files as $file) {
-            $filePath = $this->assets->fetch("css/$file");
+            $filePath = $this->assets->fetch("css/$file.css");
             $cssIncludeHtml = $this->generateCssIncludeFile($filePath);
             array_push($cssHtml, $cssIncludeHtml);
         }
