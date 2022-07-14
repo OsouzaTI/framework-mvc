@@ -5,7 +5,6 @@ namespace App;
 use Core\Assets;
 use Core\Component;
 use Core\Html;
-use Core\ORM\MongoDB;
 
 class Controller {
     public $component;
