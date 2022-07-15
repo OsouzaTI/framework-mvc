@@ -11,6 +11,10 @@ class Router {
     private $method = 'index';
     private $params = [];
 
+    // Middleware
+    private $beforeMiddleware = [];
+    private $afterMiddleware = [];
+
     public function __construct() {
         $router = $this->processUrl();
         
@@ -30,7 +34,37 @@ class Router {
         }
 
         $this->params = $router ? array_values($router) : [];
+
+        // executa todos os middlewares que foram adicionados na area de before
+        $this->handlerBeforeMiddlewares();
+
+        // executa a funcao principal de roteamente
         call_user_func_array([$object, $this->method], $this->params);
+        
+        // executa todos os middlewares que foram adicionados na area de after
+        $this->handlerAfterMiddlewares();
+    }
+
+    private function handlerBeforeMiddlewares() {
+        foreach($this->beforeMiddleware as $middleware)
+            $middleware($this->params);
+    }
+
+    private function handlerAfterMiddlewares() {
+        foreach($this->afterMiddleware as $middleware)
+            $middleware($this->params);
+    }
+
+    public function before($middleware) 
+    {
+        $this->beforeMiddleware[] = $middleware;
+        return $this;
+    }
+
+    public function after($middleware) 
+    {
+        $this->afterMiddleware[] = $middleware;
+        return $this;
     }
 
     public function processUrl() : array
